@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete
+} from '@nestjs/common';
 import { QrcodeService } from './qrcode.service';
 import { CreateQrcodeDto } from './dto/create-qrcode.dto';
 import { UpdateQrcodeDto } from './dto/update-qrcode.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('qrcode')
 @Controller('qrcode')
 export class QrcodeController {
   constructor(private readonly qrcodeService: QrcodeService) {}

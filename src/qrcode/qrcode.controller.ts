@@ -1,44 +1,21 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete
+  Res
 } from '@nestjs/common';
 import { QrcodeService } from './qrcode.service';
-import { CreateQrcodeDto } from './dto/create-qrcode.dto';
-import { UpdateQrcodeDto } from './dto/update-qrcode.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 
 @ApiTags('qrcode')
 @Controller('qrcode')
 export class QrcodeController {
   constructor(private readonly qrcodeService: QrcodeService) {}
 
-  @Post()
-  create(@Body() createQrcodeDto: CreateQrcodeDto) {
-    return this.qrcodeService.create(createQrcodeDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.qrcodeService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.qrcodeService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQrcodeDto: UpdateQrcodeDto) {
-    return this.qrcodeService.update(+id, updateQrcodeDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.qrcodeService.remove(+id);
+@Get()
+async create(@Res() res: Response) {
+  const image = await this.qrcodeService.generate();
+    res.writeHead(200, { 'Content-Type': 'image/png' });
+    res.end(image, 'binary');
   }
 }
